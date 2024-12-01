@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: . 
+    container_name: spreadsheet-reader
+    volumes:
+      - .:/var/www/html
+      - ./uploads:/uploads
+    ports:
+      - "9000:9000"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+    networks:
+      - laravel-network
+
+  webserver:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "8080:80"
+    networks:
+      - laravel-network
+
+networks:
+  laravel-network:
